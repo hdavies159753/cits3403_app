@@ -1,2 +1,3 @@
 def FreeFruit():
-    return "pear"
+    return ["pear", "apple"]
+

@@ -1,3 +1,3 @@
-def freefurit():
-    return "apple"
-    
+def FreeFruit():
+    return ["pear", "apple"]
+

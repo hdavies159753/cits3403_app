@@ -1,0 +1,48 @@
+.sidenav {
+  height: 100%; /* 100% Full-height */
+  width: 0; /* 0 width - change this with JavaScript */
+  position: fixed; /* Stay in place */
+  z-index: 9999; /* Stay on top */
+  top: 0;
+  left: 0;
+  background-color: #000000; /* Black*/
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 60px; /* Place content 60px from the top */
+  transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+}
+
+/* The navigation menu links */
+.sidenav a {
+  padding: 2% 2% 2% 6%;
+  text-decoration: none;
+  font-size: max(1vw, 15px);
+  color: #505050;
+  display: block;
+  transition: 0.3s;
+}
+
+/* When you mouse over the navigation links, change their color */
+.sidenav a:hover {
+  color: #85f0b9;
+}
+
+/* Position and style the close button (top right corner) */
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 4%;
+  font-size: max(2vw, 30px);
+  margin-left: 4%;
+}
+
+button {
+  background-color: #848484;
+  border: #848484;
+  transition-duration: 0.4s;
+  text-align: center;
+}
+
+button:hover{
+  background-color: #85f0b9;
+  border: #85f0b9
+}

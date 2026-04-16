@@ -4,24 +4,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>PromptPage</title>
+    <link rel="stylesheet" href="Style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
   </head>
   <body>
-    <div class="container mt-5">
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="#">Prompt</a>
+        <a href="#">Browse</a>
+        <a href="#">Leaderboard</a>
+    </div>
 
-      <nav class="container-fluid py-3">
-      <div class="row">
-        <div class="col text-center">
-            <a href="#">Header 1</a>
-            <a href="#" class="ms-4">Header 2</a>
-            <a href="#" class="ms-4">Header 3</a>
-            <a href="#" class="ms-4">Header 4</a>
-        </div>
-     </div>
-  </nav>
-
-
-  
+    <button onclick="openNav()">Menu</button>
 
       <div class="row">
         <div class= "col-sm-12 text-center">
@@ -71,11 +65,15 @@
     </div>
 </div>
 
-
-      
-
-
-
     </div>
-  </body>
+    <script>
+        function openNav() {
+                document.getElementById("mySidenav").style.width = "max(10%, 100px)";
+        }
+
+        function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+        }
+    </script>
+</body>
 </html>

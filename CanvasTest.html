@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Canvas Editor Test</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      background: #f0f0f0;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    #drawing-canvas {
+      border: 2px solid #333;
+      cursor: crosshair;
+      background: #ffffff;
+      image-rendering: pixelated;
+    }
+
+    #brush-size {
+      width: 60px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Canvas Editor Test</h1>
+
+  <div class="toolbar">
+    <button id="btn-brush" class="active">Brush</button>
+    <button id="btn-eraser">Eraser</button>
+    <button id="btn-clear">Clear</button>
+    <label>
+      Color: <input type="color" id="color-picker" value="#000000">
+    </label>
+    <label>
+      Size: <input type="range" id="brush-size" min="1" max="20" value="3">
+      <span id="size-label">3</span>
+    </label>
+  </div>
+
+  <canvas id="drawing-canvas" width="256" height="256"></canvas>
+
+  <script>
+    const canvas = document.getElementById('drawing-canvas');
+    const ctx = canvas.getContext('2d');
+
+    const displayScale = 2;
+    canvas.style.width = (256 * displayScale) + 'px';
+    canvas.style.height = (256 * displayScale) + 'px';
+
+    let drawing = false;
+    let tool = 'brush';       
+    let color = '#000000';
+    let brushSize = 3;
+    let lastX = null;
+    let lastY = null;
+
+    const btnBrush = document.getElementById('btn-brush');
+    const btnEraser = document.getElementById('btn-eraser');
+    const btnClear = document.getElementById('btn-clear');
+    const colorPicker = document.getElementById('color-picker');
+    const sizeSlider = document.getElementById('brush-size');
+    const sizeLabel = document.getElementById('size-label');
+
+    btnBrush.addEventListener('click', () => {
+      tool = 'brush';
+      btnBrush.classList.add('active');
+      btnEraser.classList.remove('active');
+    });
+
+    btnEraser.addEventListener('click', () => {
+      tool = 'eraser';
+      btnEraser.classList.add('active');
+      btnBrush.classList.remove('active');
+    });
+
+    btnClear.addEventListener('click', () => {
+      ctx.clearRect(0, 0, 256, 256);
+    });
+
+    colorPicker.addEventListener('input', (e) => {
+      color = e.target.value;
+    });
+
+    sizeSlider.addEventListener('input', (e) => {
+      brushSize = parseInt(e.target.value);
+      sizeLabel.textContent = brushSize;
+    });
+
+    function getCanvasPos(e) {
+      const rect = canvas.getBoundingClientRect();
+      return {
+        x: (e.clientX - rect.left) * (256 / rect.width),
+        y: (e.clientY - rect.top) * (256 / rect.height)
+      };
+    }
+
+    function drawDot(x, y) {
+      ctx.beginPath();
+      ctx.arc(x, y, brushSize / 2, 0, Math.PI * 2);
+      if (tool === 'eraser') {
+        ctx.globalCompositeOperation = 'destination-out';
+      } else {
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.fillStyle = color;
+      }
+      ctx.fill();
+    }
+
+    function drawLine(x0, y0, x1, y1) {
+      const dist = Math.hypot(x1 - x0, y1 - y0);
+      const steps = Math.max(Math.ceil(dist), 1);
+
+      for (let i = 0; i <= steps; i++) {
+        const t = i / steps;
+        const x = x0 + (x1 - x0) * t;
+        const y = y0 + (y1 - y0) * t;
+        drawDot(x, y);
+      }
+    }
+
+    canvas.addEventListener('mousedown', (e) => {
+      drawing = true;
+      const pos = getCanvasPos(e);
+      lastX = pos.x;
+      lastY = pos.y;
+      drawDot(pos.x, pos.y);
+    });
+
+    canvas.addEventListener('mousemove', (e) => {
+      if (!drawing) return;
+      const pos = getCanvasPos(e);
+      drawLine(lastX, lastY, pos.x, pos.y);
+      lastX = pos.x;
+      lastY = pos.y;
+    });
+
+    canvas.addEventListener('mouseup', () => {
+      drawing = false;
+      lastX = null;
+      lastY = null;
+    });
+
+    canvas.addEventListener('mouseleave', () => {
+      drawing = false;
+      lastX = null;
+      lastY = null;
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>drawing_page</title>
+</head>
+<body>
+
+    <h1>Drawing Game</h1>
+    <h1>Draw your own image with the word provided. Your drawing will be uploaded and others will guess what you are drawing.</h1>
+    <h2>Word to draw:</h2>
+    <div class="tool_bar">
+        <div style="display: flex; gap: 20px;">
+            <label>Colour:</label>
+            <input type="color">
+
+            <label>Pen size:</label>
+        <input type="range" min="1" max="10">
+        </div>
+        <button type="button">Clear</button>
+        <button type="button">Previous</button>
+        <button type="button">Next</button>
+        <button type="button">Submit</button>
+    </div>
+
+    <div class="drawing_area">
+        <div style="border:1px solid black; width:600px; height:400px;">
+
+        <p>This is the drawing area</p>
+        </div>
+    </div>
+
+    <div class="comment_area">
+
+        <input type="text" placeholder="Guess what is this and share your opinion" style = "width: 300px;">
+        <div style="border:1px solid black; width:600px; height:400px;">
+            <p>the comment will show here.</p>
+        </div>
+    </div>  
+
+</body>
+</html>

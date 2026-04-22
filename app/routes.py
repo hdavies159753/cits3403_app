@@ -21,7 +21,3 @@ def login():
 @main.route('/drawing')
 def drawing():
     return render_template('drawing.html')
-
-@main.route('/editor')
-def editor():
-    return render_template('editor.html')

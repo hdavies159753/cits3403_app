@@ -17,3 +17,11 @@ def leaderboard():
 @main.route('/login')
 def login():
     return render_template('login.html')
+
+@main.route('/drawing')
+def drawing():
+    return render_template('drawing.html')
+
+@main.route('/editor')
+def editor():
+    return render_template('editor.html')

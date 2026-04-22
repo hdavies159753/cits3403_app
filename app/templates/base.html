@@ -11,9 +11,9 @@
   <body>
     <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="#">Prompt</a>
-        <a href="#">Browse</a>
-        <a href="#">Leaderboard</a>
+        <a href="{{ url_for('main.index') }}">Prompt</a>
+        <a href="{{ url_for('main.browse') }}">Browse</a>
+        <a href="{{ url_for('main.leaderboard') }}">Leaderboard</a>
     </div>
 
     <button onclick="openNav()">Menu</button>

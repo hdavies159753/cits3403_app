@@ -13,3 +13,7 @@ def browse():
 @main.route('/leaderboard')
 def leaderboard():
     return render_template('leaderboard.html')
+
+@main.route('/login')
+def login():
+    return render_template('login.html')

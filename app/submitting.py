@@ -1,19 +1,16 @@
-import sqlite3
-
-db_path = "app/drawing_database.db"
-
+from app import db
+from app.models import Drawing
 
 def submit_and_save (data):
+
     image_data = data.get('image')
-    connection = sqlite3.connect(db_path)
-    cursor = connection.cursor()
-    try:
-        cursor.execute(
-            "INSERT INTO drawings (image) VALUES (?)",
-            (image_data,)
-        )
-        connection.commit()
-        return True, "Submitted!"
-    finally:
-        connection.close()
+
+    drawing = Drawing(
+        image = image_data,
+        prompt_id=2,
+        user_id=2
+    )
+    db.session.add(drawing)
+    db.session.commit()
+    return True, "Subbmited!"
         

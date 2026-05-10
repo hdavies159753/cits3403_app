@@ -10,4 +10,5 @@ else
     source venv/bin/activate
 fi
 
+flask db upgrade
 python3 run.py

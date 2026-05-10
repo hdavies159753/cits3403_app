@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, jsonify, request
 from app.submitting import submit_and_save
+from app.models import Drawing
 
 main = Blueprint('main', __name__)
 

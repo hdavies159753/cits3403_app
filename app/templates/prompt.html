@@ -179,19 +179,18 @@ function getCanvasPos(e) {
     const imageData = canvas.toDataURL("image/png");
     fetch("/submit_drawing", {
       method: "POST",
-      headers: {"Content-type" : "application/json"
-      },
+      headers: {"Content-Type": "application/json"},
       body: JSON.stringify({
-        image : imageData
+        image: imageData
       })
-  })
+    })
     .then(res => res.json())
     .then(data => {
       alert(data.message);
-  })
+    })
     .catch(error => {
-      console.error(error)
-      alert("Error submittion!")
+      console.error(error);
+      alert("Error submitting!")
     });
   });
 </script>

@@ -27,8 +27,12 @@ def drawing():
 @main.route('/submit_drawing', methods=['POST'])
 def submit_drawing():
     data = request.get_json()
+    if not data:
+        return jsonify({"success": False, "message": "Invalid request."}), 400
+
     success, message = submit_and_save(data)
+    status_code = 200 if success else 400
     return jsonify({
-        "success": success, 
-        "message" : message
-    })
+        "success": success,
+        "message": message
+    }), status_code

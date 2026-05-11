@@ -1,5 +1,12 @@
-from app import db
+from app import db, login_manager
+from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timezone
+
+
+@login_manager.user_loader
+def load_user(id):
+    return User.query.get(int(id))
 
 
 class Drawing(db.Model):
@@ -22,16 +29,22 @@ class Drawing(db.Model):
         return f'<Drawing {self.id} by User {self.user_id}>'
 
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), unique=True, nullable=False)
     email = db.Column(db.String(64), unique=True, nullable=True)
-    password_hashed = db.Column(db.String(256), nullable=True)
+    password_hashed = db.Column(db.String(256), nullable=False)
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
     drawings = db.relationship("Drawing", back_populates="user")
     vote_drawing = db.relationship("Vote", back_populates="voter")
+
+    def set_password(self, password):
+        self.password_hashed = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hashed, password)
 
     def __repr__(self):
         return f'<User {self.id} {self.username}>'

@@ -3,13 +3,12 @@
 if not exist "venv\" (
     echo Creating virtual environment...
     python -m venv venv
-    call venv\Scripts\activate.bat
-    echo Installing dependencies...
-    pip install -r requirements.txt
-) else (
-    call venv\Scripts\activate.bat
 )
 
+call venv\Scripts\activate.bat
+pip install -r requirements.txt
+
+set FLASK_APP=run.py
 flask db upgrade
 python run.py
 pause

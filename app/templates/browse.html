@@ -23,54 +23,22 @@
         <div class="col-md-6">
             <label for="promptSelect" class="form-label">Choose a prompt</label>
             <select id="promptSelect" class="form-select">
-                <option>Dragon working at McDonald's</option>
-                <option>Cat flying a plane</option>
-                <option>Robot on holiday</option>
             </select>
         </div>
 
         <div class="col-md-6">
             <label for="dateSelect" class="form-label">Choose a date</label>
-            <input type="date" id="dateSelect" class="form-control">
+            <select id="dateSelect" class="form-select">
+            </select>
         </div>
     </div>
 
     <!-- Gallery section -->
-    <div class="row mt-5 g-4">
-
-        <div class="col-md-4">
-            <div class="card">
-                <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="drawing 1">
-                <div class="card-body">
-                    <h5 class="card-title">ArtistOne</h5>
-                    <p class="card-text">Prompt: Dragon working at McDonald's</p>
-                    <p class="card-text">Rating: 4.8</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card">
-                <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="drawing 2">
-                <div class="card-body">
-                    <h5 class="card-title">SketchMaster</h5>
-                    <p class="card-text">Prompt: Dragon working at McDonald's</p>
-                    <p class="card-text">Rating: 4.5</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card">
-                <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="drawing 3">
-                <div class="card-body">
-                    <h5 class="card-title">DoodleFan</h5>
-                    <p class="card-text">Prompt: Dragon working at McDonald's</p>
-                    <p class="card-text">Rating: 4.2</p>
-                </div>
-            </div>
-        </div>
-
+    <div class="row mt-5 g-4" id="drawingGallery">
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='browse.js') }}"></script>
 {% endblock %}

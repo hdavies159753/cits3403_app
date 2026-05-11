@@ -172,5 +172,27 @@ function getCanvasPos(e) {
     lastX = null;
     lastY = null;
   });
+
+  const submitBtn = document.getElementById("submit_btn");
+
+  submitBtn.addEventListener("click", () => {
+    const imageData = canvas.toDataURL("image/png");
+    fetch("/submit_drawing", {
+      method: "POST",
+      headers: {"Content-type" : "application/json"
+      },
+      body: JSON.stringify({
+        image : imageData
+      })
+  })
+    .then(res => res.json())
+    .then(data => {
+      alert(data.message);
+  })
+    .catch(error => {
+      console.error(error)
+      alert("Error submittion!")
+    });
+  });
 </script>
 {% endblock %}

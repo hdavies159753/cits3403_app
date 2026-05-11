@@ -10,5 +10,6 @@ if not exist "venv\" (
     call venv\Scripts\activate.bat
 )
 
+flask db upgrade
 python run.py
 pause

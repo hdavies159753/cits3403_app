@@ -1,4 +1,6 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, jsonify, request
+from app.submitting import submit_and_save
+from app.models import Drawing
 
 main = Blueprint('main', __name__)
 
@@ -21,3 +23,12 @@ def login():
 @main.route('/drawing')
 def drawing():
     return render_template('drawing.html')
+
+@main.route('/submit_drawing', methods=['POST'])
+def submit_drawing():
+    data = request.get_json()
+    success, message = submit_and_save(data)
+    return jsonify({
+        "success": success, 
+        "message" : message
+    })

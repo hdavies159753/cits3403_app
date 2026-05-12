@@ -56,7 +56,7 @@
     <div class="col-md-4 mt-4 mt-md-0">
       <div id="prompt-status" class="border rounded p-4">
         <h3>Time Left</h3>
-        <p>Next prompt in: xxh xxm</p>
+        <p id="countdownText">Next prompt in: --h --m</p>
         <hr>
         <h4>Your Status</h4>
         <p>You have not submitted a drawing yet today.</p>
@@ -200,5 +200,29 @@ function getCanvasPos(e) {
       alert("Error submitting!")
     });
   });
+</script>
+
+<script>
+function updatePerthCountdown() {
+    const now = new Date();
+
+    const perthNow = new Date(
+        now.toLocaleString("en-US", { timeZone: "Australia/Perth" })
+    );
+
+    const nextMidnight = new Date(perthNow);
+    nextMidnight.setHours(24, 0, 0, 0);
+
+    const diffMs = nextMidnight - perthNow;
+    const totalMinutes = Math.floor(diffMs / 1000 / 60);
+    const hoursLeft = Math.floor(totalMinutes / 60);
+    const minutesLeft = totalMinutes % 60;
+
+    document.getElementById("countdownText").textContent =
+        `Next prompt in: ${hoursLeft}h ${minutesLeft}m`;
+}
+
+updatePerthCountdown();
+setInterval(updatePerthCountdown, 60000);
 </script>
 {% endblock %}

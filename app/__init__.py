@@ -19,4 +19,7 @@ def create_app(config_class=Config):
     from app.routes import main
     app.register_blueprint(main)
 
+    with app.app_context():
+        db.create_all()  # temporary — ensures tables exist without migrations
+
     return app

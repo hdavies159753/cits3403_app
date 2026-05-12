@@ -2,16 +2,115 @@
 
 {% block title %}Leaderboard{% endblock %}
 
-{% block content %}
-<div class="row">
-    <div class="col-sm-12 text-center">
-        <h1>Leaderboard: </h1>
-    </div>
-</div>
+{% block head %}
+<style>
+    .leaderboard-container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 0 15px;
+    }
+    .prompt-filter {
+        margin-bottom: 20px;
+    }
+    .prompt-filter select {
+        padding: 6px 12px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+    }
+    .leaderboard-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .leaderboard-table th,
+    .leaderboard-table td {
+        padding: 10px 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+    .leaderboard-table th {
+        background-color: #f5f5f5;
+        font-weight: 600;
+    }
+    .leaderboard-table tr:hover {
+        background-color: #f9f9f9;
+    }
+    .rank-cell {
+        width: 50px;
+        font-weight: 700;
+        text-align: center;
+    }
+    .thumbnail {
+        width: 64px;
+        height: 64px;
+        object-fit: contain;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+    .score-cell {
+        font-weight: 600;
+        text-align: center;
+    }
+    .no-results {
+        text-align: center;
+        padding: 40px;
+        color: #888;
+    }
+</style>
+{% endblock %}
 
-<div class="col-md-12 d-flex justify-content-center">
-    <div class="border rounded p-1" style="height: 500px; width: 600px;">
-        <p class="mt-5 text-center">Leaderboard Here</p>
+{% block content %}
+<div class="leaderboard-container">
+    <div class="row">
+        <div class="col-sm-12 text-center">
+            <h1>Leaderboard</h1>
+        </div>
     </div>
+
+    <div class="prompt-filter">
+        <form method="get" action="{{ url_for('main.leaderboard') }}">
+            <label for="prompt_id"><strong>Filter by prompt:</strong></label>
+            <select name="prompt_id" id="prompt_id" onchange="this.form.submit()">
+                <option value="">All Time</option>
+                {% for prompt in prompts %}
+                <option value="{{ prompt.id }}" {% if selected_prompt_id == prompt.id %}selected{% endif %}>
+                    {{ prompt.text }} ({{ prompt.date }})
+                </option>
+                {% endfor %}
+            </select>
+        </form>
+    </div>
+
+    {% if rankings %}
+    <table class="leaderboard-table">
+        <thead>
+            <tr>
+                <th class="rank-cell">#</th>
+                <th>Drawing</th>
+                <th>Artist</th>
+                <th>Prompt</th>
+                <th>Date</th>
+                <th class="score-cell">Votes</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in rankings %}
+            <tr>
+                <td class="rank-cell">{{ entry.rank }}</td>
+                <td>
+                    <img class="thumbnail" src="data:image/png;base64,{{ entry.image }}" alt="Drawing by {{ entry.username }}">
+                </td>
+                <td>{{ entry.username }}</td>
+                <td>{{ entry.prompt_text }}</td>
+                <td>{{ entry.date }}</td>
+                <td class="score-cell">{{ entry.score }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="no-results">
+        <p>No drawings found.</p>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}

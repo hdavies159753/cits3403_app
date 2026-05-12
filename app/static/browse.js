@@ -5,7 +5,7 @@ const mockDrawings = [
         artist: "ArtistOne",
         prompt: "Dragon working at McDonald's",
         rating: 4.8,
-        image: "https://via.placeholder.com/300x200",
+        image: "https://placehold.co/300x200",
         date: "2026-05-05"
     },
     {
@@ -13,7 +13,7 @@ const mockDrawings = [
         artist: "SketchMaster",
         prompt: "Dragon working at McDonald's",
         rating: 4.5,
-        image: "https://via.placeholder.com/300x200",
+        image: "https://placehold.co/300x200",
         date: "2026-05-05"
     },
     {
@@ -21,7 +21,7 @@ const mockDrawings = [
         artist: "DoodleFan",
         prompt: "Dragon working at McDonald's",
         rating: 4.2,
-        image: "https://via.placeholder.com/300x200",
+        image: "https://placehold.co/300x200",
         date: "2026-05-05"
     },
     {
@@ -29,7 +29,7 @@ const mockDrawings = [
         artist: "PixelArtist",
         prompt: "Cat flying a plane",
         rating: 4.9,
-        image: "https://via.placeholder.com/300x200",
+        image: "https://placehold.co/300x200",
         date: "2026-05-04"
     },
     {
@@ -37,7 +37,7 @@ const mockDrawings = [
         artist: "CreativeGenius",
         prompt: "Robot on holiday",
         rating: 4.6,
-        image: "https://via.placeholder.com/300x200",
+        image: "https://placehold.co/300x200",
         date: "2026-05-03"
     }
 ];
@@ -80,7 +80,9 @@ function renderGallery() {
         card.className = "col-md-4";
         card.innerHTML = `
             <div class="card">
-                <img src="${drawing.image}" class="card-img-top" alt="drawing">
+                <a href="/drawing/${drawing.id}">
+                    <img src="${drawing.image}" class="card-img-top" alt="drawing">
+                </a>
                 <div class="card-body">
                     <h5 class="card-title">${drawing.artist}</h5>
                     <p class="card-text">Prompt: ${drawing.prompt}</p>

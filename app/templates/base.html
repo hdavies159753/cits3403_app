@@ -9,6 +9,9 @@
     {% block head %}{% endblock %}
   </head>
   <body>
+    <img class="vine1" src="{{ url_for('static', filename='vine1.png') }}" />
+    <img class="vine2" src="{{ url_for('static', filename='vine2.webp') }}" alt="vine2" class="vine2">
+    <img class="vine3" src="{{ url_for('static', filename='vine3.webp') }}" alt="vine3" class="vine3">
     <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
         <a href="{{ url_for('main.index') }}">Prompt</a>

@@ -20,15 +20,12 @@
 
     {% block content %}{% endblock %}
 
-    <script>
-        function openNav() {
-            document.getElementById("mySidenav").style.width = "max(10%, 100px)";
-        }
+    <script type="module">
+      import { openNav, closeNav } from "{{ url_for('static', filename='sidebar.js') }}";
 
-        function closeNav() {
-            document.getElementById("mySidenav").style.width = "0";
-        }
+      window.openNav = openNav;
+      window.closeNav = closeNav;
     </script>
-    {% block scripts %}{% endblock %}
+  {% block scripts %}{% endblock %}
   </body>
 </html>

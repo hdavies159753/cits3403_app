@@ -17,7 +17,7 @@ def browse():
     selected_prompt = request.args.get('prompt', 'all')
     selected_date = request.args.get('date', 'all')
 
-    page_data = get_browse_page_data(selected_prompt, selected_date)
+    page_data = get_browsepage_data(selected_prompt, selected_date)
     return render_template('browse.html', **page_data)
 
 

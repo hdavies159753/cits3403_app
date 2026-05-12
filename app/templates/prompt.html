@@ -13,12 +13,19 @@
       <h1 class="display-3 fw-bold">Daily Doodle</h1>
     </div>
   </div>
-
-  <div class="row">
+  
+<div class="row">
     <div class="col-12 text-center">
-      <h1>Today's Prompt: <mark>Example</mark></h1>
+        <h1>
+            Today's Prompt:
+            {% if todays_prompt %}
+                <mark>{{ todays_prompt.text }}</mark>
+            {% else %}
+                <mark>No prompt for today</mark>
+            {% endif %}
+        </h1>
     </div>
-  </div>
+</div>
 
   <div class="row mt-4 justify-content-center align-items-start">
     <div id="drawing-container" class="col-md-8 text-center">

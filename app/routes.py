@@ -1,12 +1,15 @@
 from flask import Blueprint, render_template, jsonify, request
 from app.submitting import submit_and_save
 from app.models import Drawing, Prompt
+from datetime import date
 
 main = Blueprint('main', __name__)
 
 @main.route('/')
 def index():
-    return render_template('prompt.html')
+    today = date.today()
+    todays_prompt = Prompt.query.filter_by(date=today).first()
+    return render_template('prompt.html', todays_prompt=todays_prompt)
 
 @main.route('/browse')
 def browse():

@@ -3,8 +3,9 @@
   cursor: crosshair;
   background: #ffffff;
   image-rendering: pixelated;
-  border: 2px solid #333;
-  border-radius: 4px;
+  display: inline-block;
+  border: 3px solid #333333;
+  border-radius: 2% 6% 5% 4% / 1% 1% 2% 4%;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   display: block;
   margin: 0 auto;
@@ -23,7 +24,7 @@
 
 .toolbar {
   padding: 10px;
-  background: #e9e9e9;
+  background: #aed5fdeb;
   border-radius: 4px;
   display: inline-block;
 }
@@ -35,5 +36,5 @@
 }
 
 .toolbar button.active {
-  background-color: #85f0b9;
+  background: linear-gradient(to right, red, orange, yellow, rgb(82, 237, 82), rgb(0, 149, 255), violet);
 }

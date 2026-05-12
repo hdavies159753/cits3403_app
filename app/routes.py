@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, jsonify, request
 from app.submitting import submit_and_save
-from app.models import Drawing
+from app.models import Drawing, Prompt
 
 main = Blueprint('main', __name__)
 
@@ -10,7 +10,10 @@ def index():
 
 @main.route('/browse')
 def browse():
-    return render_template('browse.html')
+    prompts = Prompt.query.order_by(Prompt.date.desc()).all()
+    drawings = Drawing.query.order_by(Drawing.date.desc()).all()
+    return render_template('browse.html', prompts=prompts, drawings=drawings)
+
 
 @main.route('/leaderboard')
 def leaderboard():

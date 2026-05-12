@@ -23,6 +23,10 @@
         <div class="col-md-6">
             <label for="promptSelect" class="form-label">Choose a prompt</label>
             <select id="promptSelect" class="form-select">
+                <option value="all">All prompts</option>
+                {% for prompt in prompts %}
+                <option value="{{ prompt.text }}">{{ prompt.text }}</option>
+                {% endfor %}
             </select>
         </div>
 
@@ -34,11 +38,30 @@
     </div>
 
     <!-- Gallery section -->
-    <div class="row mt-5 g-4" id="drawingGallery">
+   <div class="row mt-5 g-4" id="drawingGallery">
+    {% if drawings %}
+        {% for drawing in drawings %}
+        <div class="col-md-4">
+            <div class="card">
+                <img src="{{ drawing.image }}" class="card-img-top" alt="drawing">
+                <div class="card-body">
+                    <h5 class="card-title">{{ drawing.user.username }}</h5>
+                    <p class="card-text">Prompt: {{ drawing.prompt.text }}</p>
+                    <p class="card-text">Date: {{ drawing.date }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="col-12">
+            <p class="text-center text-muted">No drawings found yet.</p>
+        </div>
+    {% endif %}
     </div>
+
 </div>
 {% endblock %}
 
 {% block scripts %}
-<script src="{{ url_for('static', filename='browse.js') }}"></script>
+<!-- <script src="{{ url_for('static', filename='browse.js') }}"></script> -->
 {% endblock %}

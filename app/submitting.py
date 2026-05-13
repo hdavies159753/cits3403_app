@@ -2,16 +2,15 @@ from app import db
 from app.models import Drawing
 
 
-def submit_and_save(data):
+def submit_and_save(user_id, data):
     image_data = data.get('image')
-    user_id = data.get('user_id')
     prompt_id = data.get('prompt_id')
 
     if not image_data:
         return False, "No image data provided."
 
-    if not user_id or not prompt_id:
-        return False, "Missing user or prompt information."
+    if not prompt_id:
+        return False, "Missing prompt information."
 
     try:
         drawing = Drawing(

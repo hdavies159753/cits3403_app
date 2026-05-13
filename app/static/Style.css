@@ -51,7 +51,8 @@ body {
 }
 
 mark {
-  background: linear-gradient(to right, red, orange, yellow, rgb(82, 237, 82), rgb(0, 149, 255), violet) !important;
+  background: rgba(255, 255, 0, 0.734) !important;
+  border-radius: 10px;
 }
 
 button {

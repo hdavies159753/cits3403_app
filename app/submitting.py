@@ -1,3 +1,4 @@
+from sqlalchemy.exc import IntegrityError
 from app import db
 from app.models import Drawing
 
@@ -21,6 +22,9 @@ def submit_and_save(user_id, data):
         db.session.add(drawing)
         db.session.commit()
         return True, "Submitted!"
+    except IntegrityError:
+        db.session.rollback()
+        return False, "You have already submitted a drawing for this prompt."
     except Exception as e:
         db.session.rollback()
-        return False, f"Submission failed: {str(e)}"
+        return False, f"Submission failed"

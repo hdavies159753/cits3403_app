@@ -9,6 +9,7 @@ from app import db
 from app.models import User
 from app.forms import LoginForm, RegisterForm
 from app.submitting import submit_and_save
+from datetime import date
 
 main = Blueprint('main', __name__)
 
@@ -16,7 +17,9 @@ main = Blueprint('main', __name__)
 @main.route('/')
 @login_required
 def index():
-    return render_template('prompt.html')
+    today = date.today()
+    todays_prompt = Prompt.query.filter_by(date=today).first()
+    return render_template('prompt.html', todays_prompt=todays_prompt)
 
 
 @main.route('/browse')

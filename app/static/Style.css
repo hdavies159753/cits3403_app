@@ -11,6 +11,10 @@
   transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
 }
 
+.sidenav.open {
+    width: max(10%, 100px);
+}
+
 /* The navigation menu links */
 .sidenav a {
   padding: 2% 2% 2% 6%;

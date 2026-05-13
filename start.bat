@@ -10,5 +10,6 @@ pip install -r requirements.txt
 
 set FLASK_APP=run.py
 flask db upgrade
+python seed.py
 python run.py
 pause

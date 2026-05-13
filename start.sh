@@ -10,4 +10,5 @@ pip install -r requirements.txt
 
 export FLASK_APP=run.py
 flask db upgrade
+python3 seed.py
 python3 run.py

@@ -18,27 +18,68 @@
         </div>
     </div>
 
+    <form method="get" action="{{ url_for('main.browse') }}"></form>
     <!-- Filter section -->
     <div class="row mt-4">
         <div class="col-md-6">
             <label for="promptSelect" class="form-label">Choose a prompt</label>
-            <select id="promptSelect" class="form-select">
+            <select id="promptSelect" class="form-select" name="prompt">
+                <option value="all" {% if selected_prompt == 'all' %}selected{% endif %}>All prompts</option>
+                {% for prompt in prompts %}
+                <option value="{{ prompt.text }}" {% if selected_prompt == prompt.text %}selected{% endif %}>
+                    {{ prompt.text }}
+                </option>
+                {% endfor %}
             </select>
         </div>
 
         <div class="col-md-6">
             <label for="dateSelect" class="form-label">Choose a date</label>
-            <select id="dateSelect" class="form-select">
-            </select>
+                <select id="dateSelect" class="form-select" name="date">
+                    <option value="all" {% if selected_date == 'all' %}selected{% endif %}>All dates</option>
+                    {% for date in dates %}
+                    <option value="{{ date }}" {% if selected_date == date|string %}selected{% endif %}>
+                        {{ date }}
+                    </option>
+                    {% endfor %}
+                </select>
         </div>
     </div>
 
+        <div class="mt-3 text-center">
+            <button type="submit" class="btn btn-primary">Apply Filters</button>
+        </div>
+    </form>
+
+
+
+
+
     <!-- Gallery section -->
-    <div class="row mt-5 g-4" id="drawingGallery">
+   <div class="row mt-5 g-4" id="drawingGallery">
+    {% if drawings %}
+        {% for drawing in drawings %}
+        <div class="col-md-4">
+            <div class="card">
+                <img src="{{ drawing.image }}" class="card-img-top" alt="drawing">
+                <div class="card-body">
+                    <h5 class="card-title">{{ drawing.user.username }}</h5>
+                    <p class="card-text">Prompt: {{ drawing.prompt.text }}</p>
+                    <p class="card-text">Date: {{ drawing.date }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="col-12">
+            <p class="text-center text-muted">No drawings found yet.</p>
+        </div>
+    {% endif %}
     </div>
+
 </div>
 {% endblock %}
 
 {% block scripts %}
-<script src="{{ url_for('static', filename='browse.js') }}"></script>
+<!-- <script src="{{ url_for('static', filename='browse.js') }}"></script> -->
 {% endblock %}

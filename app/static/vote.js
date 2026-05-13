@@ -1,6 +1,7 @@
 const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
 const voteBtn = document.querySelector(".vote-btn");
+if (voteBtn) {
 voteBtn.addEventListener("click", () => {
     const drawingId = voteBtn.dataset.drawingId;
     fetch("/vote", {
@@ -25,6 +26,7 @@ voteBtn.addEventListener("click", () => {
     })
     .catch(error => {
         console.error(error);
-        alert("Error submitting!");
+        alert("Error voting!");
     });
 });
+}

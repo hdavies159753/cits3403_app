@@ -27,7 +27,6 @@ def create_app(config_class=Config):
     app.register_blueprint(main)
 
     with app.app_context():
-        db.create_all()
         _seed_admin()
 
     return app
@@ -36,8 +35,11 @@ def create_app(config_class=Config):
 def _seed_admin():
     """Create the default admin account if it doesn't already exist."""
     from app.models import User
-    if not User.query.filter_by(username='adminuser').first():
-        admin = User(username='adminuser')
-        admin.set_password('adminuserpass')
-        db.session.add(admin)
-        db.session.commit()
+    try:
+        if not User.query.filter_by(username='adminuser').first():
+            admin = User(username='adminuser')
+            admin.set_password('adminuserpass')
+            db.session.add(admin)
+            db.session.commit()
+    except Exception:
+        pass  # table may not exist yet (e.g. during flask db upgrade)

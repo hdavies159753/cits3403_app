@@ -48,7 +48,11 @@
 
       <!-- Submit -->
       <div class="mt-3 mb-0">
-        <button type="button" class="btn btn-primary" id = "submit_btn" >Submit Drawing</button>
+        <button type="button" class="btn btn-primary" id="submit_btn"
+          data-prompt-id="{{ todays_prompt.id if todays_prompt else '' }}"
+          {% if not todays_prompt %}disabled{% endif %}>
+          Submit Drawing
+        </button>
       </div>
     </div>
 
@@ -187,6 +191,11 @@
   const submitBtn = document.getElementById("submit_btn");
 
   submitBtn.addEventListener("click", () => {
+    const promptId = submitBtn.dataset.promptId;
+    if (!promptId) {
+      alert("No prompt available today.");
+      return;
+    }
     const imageData = canvas.toDataURL("image/png");
     fetch("/submit_drawing", {
       method: "POST",
@@ -195,7 +204,8 @@
         "X-CSRFToken": csrfToken
       },
       body: JSON.stringify({
-        image: imageData
+        image: imageData,
+        prompt_id: parseInt(promptId)
       })
     })
     .then(res => res.json())

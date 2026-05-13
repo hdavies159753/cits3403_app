@@ -1,9 +1,14 @@
-const voteBtn = document.querySelector(".vote-btn")
+const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+const voteBtn = document.querySelector(".vote-btn");
 voteBtn.addEventListener("click", () => {
     const drawingId = voteBtn.dataset.drawingId;
     fetch("/vote", {
         method: "POST",
-        headers: {"Content-Type": "application/json"},
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrfToken
+        },
         body: JSON.stringify({
             drawing_id: drawingId
         })
@@ -12,14 +17,14 @@ voteBtn.addEventListener("click", () => {
     .then(data => {
         alert(data.message);
         if (data.success) {
-            const votewCount = document.getElementById(
-                'vote-count-$(drawingId)'
+            const voteCount = document.getElementById(
+                `vote-count-${drawingId}`
             );
-            votewCount.textContent = data.vote_count;
+            voteCount.textContent = data.vote_count;
         }
     })
     .catch(error => {
         console.error(error);
-        alert("Error submitting!")
+        alert("Error submitting!");
     });
 });

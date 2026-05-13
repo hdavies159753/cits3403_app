@@ -1,15 +1,12 @@
-from flask import Blueprint, render_template, jsonify, request
-from sqlalchemy import func
-from app import db
-from app.submitting import submit_and_save
-from app.models import Drawing, Vote, Prompt, User
 from flask import Blueprint, render_template, jsonify, request, redirect, url_for, flash
+from sqlalchemy import func
 from flask_login import login_user, logout_user, login_required, current_user
+from datetime import date
+
 from app import db
-from app.models import User
+from app.models import Drawing, Vote, Prompt, User
 from app.forms import LoginForm, RegisterForm
 from app.submitting import submit_and_save
-from datetime import date
 from app.browse_logic import get_browsepage_data
 
 main = Blueprint('main', __name__)
@@ -97,7 +94,9 @@ def login():
 
         login_user(user)
         next_page = request.args.get('next')
-        return redirect(next_page or url_for('main.index'))
+        if not next_page or not next_page.startswith('/') or next_page.startswith('//'):
+            next_page = url_for('main.index')
+        return redirect(next_page)
 
     return render_template('login.html', form=form)
 
@@ -129,12 +128,6 @@ def logout():
     return redirect(url_for('main.login'))
 
 
-@main.route('/drawing')
-@login_required
-def drawing():
-    return render_template('drawing.html')
-
-
 @main.route('/submit_drawing', methods=['POST'])
 @login_required
 def submit_drawing():
@@ -149,38 +142,31 @@ def submit_drawing():
         "message": message
     }), status_code
 
-@main.route('/vote', methods = ['POST'])
+@main.route('/vote', methods=['POST'])
+@login_required
 def vote():
     data = request.get_json()
     drawing_id = data.get("drawing_id")
-    voter_id = 1
-    existing_vote = Vote.query.filter_by(voter_id = voter_id, drawing_id = drawing_id).first()
+
+    drawing_obj = Drawing.query.get(drawing_id)
+    if not drawing_obj:
+        return jsonify({"success": False, "message": "Drawing not found."}), 404
+    if drawing_obj.user_id == current_user.id:
+        return jsonify({"success": False, "message": "You cannot vote on your own drawing."}), 400
+
+    existing_vote = Vote.query.filter_by(voter_id=current_user.id, drawing_id=drawing_id).first()
     if existing_vote:
-           return jsonify({
-                "success": False,
-                "message": "Already Voted!"}), 400
-    vote = Vote(voter_id = voter_id, drawing_id = drawing_id)
-    db.session.add(vote)
+        return jsonify({"success": False, "message": "Already voted!"}), 400
+
+    new_vote = Vote(voter_id=current_user.id, drawing_id=drawing_id)
+    db.session.add(new_vote)
     db.session.commit()
-    vote_count = Vote.query.filter_by(drawing_id = drawing_id).count()
-    return jsonify({
-        "success": True,
-        "message": "Vote submitted!",
-        "vote_count": vote_count
-    })
+    vote_count = Vote.query.filter_by(drawing_id=drawing_id).count()
+    return jsonify({"success": True, "message": "Vote submitted!", "vote_count": vote_count})
 
 @main.route("/drawing/<int:drawing_id>")
+@login_required
 def individual_drawing(drawing_id):
-    drawing = {
-
-    "id": drawing_id,
-
-    "artist": "Test Artist",
-
-    "prompt": "Test Prompt",
-
-    "image": "https://placehold.co/300x200"
-
-}
+    drawing = Drawing.query.get_or_404(drawing_id)
     return render_template("individual_drawing.html", drawing=drawing)
 

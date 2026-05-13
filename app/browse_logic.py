@@ -1,3 +1,4 @@
+from datetime import datetime
 from app.models import Prompt, Drawing
 
 
@@ -10,7 +11,11 @@ def get_browsepage_data(selected_prompt="all", selected_date="all"):
         query = query.join(Prompt).filter(Prompt.text == selected_prompt)
 
     if selected_date != "all":
-        query = query.filter(Drawing.date >= selected_date)
+        try:
+            parsed_date = datetime.strptime(selected_date, "%Y-%m-%d")
+            query = query.filter(Drawing.date >= parsed_date)
+        except (ValueError, TypeError):
+            pass  # invalid date string — skip filter
 
     drawings = query.all()
     dates = sorted(

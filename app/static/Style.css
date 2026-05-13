@@ -39,14 +39,14 @@
   margin-left: 4%;
 }
 
-button {
+.menu-btn {
   background-color: #848484;
   border: #848484;
   transition-duration: 0.4s;
   text-align: center;
 }
 
-button:hover{
+.menu-btn:hover {
   background-color: #85f0b9;
-  border: #85f0b9
+  border: #85f0b9;
 }

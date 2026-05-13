@@ -10,6 +10,7 @@ from app.models import User
 from app.forms import LoginForm, RegisterForm
 from app.submitting import submit_and_save
 from datetime import date
+from app.browse_logic import get_browsepage_data
 
 main = Blueprint('main', __name__)
 
@@ -28,27 +29,8 @@ def browse():
     selected_prompt = request.args.get('prompt', 'all')
     selected_date = request.args.get('date', 'all')
 
-    prompts = Prompt.query.order_by(Prompt.date.desc()).all()
-
-    query = Drawing.query.order_by(Drawing.date.desc())
-
-    if selected_prompt != 'all':
-        query = query.join(Prompt).filter(Prompt.text == selected_prompt)
-
-    if selected_date != 'all':
-        query = query.filter(Drawing.date >= selected_date)
-
-    drawings = query.all()
-    dates = sorted({drawing.date.date() for drawing in drawings if drawing.date}, reverse=True)
-
-    return render_template(
-        'browse.html',
-        prompts=prompts,
-        drawings=drawings,
-        dates=dates,
-        selected_prompt=selected_prompt,
-        selected_date=selected_date
-    )
+    page_data = get_browsepage_data(selected_prompt, selected_date)
+    return render_template('browse.html', **page_data)
 
 
 

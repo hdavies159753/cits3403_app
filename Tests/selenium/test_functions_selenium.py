@@ -24,11 +24,14 @@ class SeleniumFunctionTests(unittest.TestCase):
         db.create_all()
 
         user = User.query.filter_by(username="testuser").first()
-        if not user:
-            user = User(username="testuser", email="test@test.com")
-            user.set_password("testpass")
-            db.session.add(user)
+        if user:
+            db.session.delete(user)
             db.session.commit()
+
+        user = User(username="testuser")
+        user.set_password("testpass")
+        db.session.add(user)
+        db.session.commit()
         options = webdriver.ChromeOptions()
         options.add_argument("--start-maximized")
         self.driver = webdriver.Chrome(options=options)
@@ -59,47 +62,32 @@ class SeleniumFunctionTests(unittest.TestCase):
 
     def test_submit_drawing(self):
         self.login()
+        submit_btn = self.driver.find_element(By.ID, "submit_btn")
+        
+        submit_btn.click()
 
-        driver = self.driver
-        driver.get(f"{BASE_URL}/drawing")
-
-        fake_payload = {
-            "image": "data:image/png;base64,TESTDATA",
-            "prompt_id": 1
-        }
-
-        driver.execute_script("""
-            fetch('/submit_drawing', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(arguments[0])
-            })
-        """, fake_payload)
-
-        # simple wait (replace with UI check if you add success message)
-        time.sleep(1)
-
-        self.assertTrue(True)
-
+        alert1 = self.wait.until(EC.alert_is_present())
+        self.assertIn("Submitted!", alert1.text)
+        alert1.accept()
 #--------------------------------------------------------------------
-
     def test_vote_increases_count(self):
         self.login()
 
         driver = self.driver
         driver.get(f"{BASE_URL}/drawing/1")
 
-        vote_btn = driver.find_element(By.CLASS_NAME, "vote-btn")
-        count_elem = driver.find_element(By.ID, "vote-count-1")
+        count_elem = self.wait.until(
+            lambda d: d.find_element(By.ID, "vote-count-1")
+        )
 
         initial = int(count_elem.text)
 
-        vote_btn.click()
+        driver.find_element(By.CLASS_NAME, "vote-btn").click()
 
-        try:
-            self.wait.until(lambda d: "Error submitting!" not in d.page_source)
-        except TimeoutException:
-            pass
+        # WAIT FOR CHANGE IN COUNT (THIS IS THE KEY FIX)
+        alert1 = self.wait.until(EC.alert_is_present())
+        self.assertIn("Vote submitted!", alert1.text)
+        alert1.accept()
 
         new_count = int(driver.find_element(By.ID, "vote-count-1").text)
 
@@ -116,14 +104,13 @@ class SeleniumFunctionTests(unittest.TestCase):
         vote_btn.click()
 
         alert1 = self.wait.until(EC.alert_is_present())
-        self.assertIn("Vote submitted", alert1.text)
+        self.assertIn("Vote submitted!", alert1.text)
         alert1.accept()
 
         vote_btn.click()
-
+        
         alert2 = self.wait.until(EC.alert_is_present())
-
-        self.assertIn("Already Voted", driver.page_source)
+        self.assertIn("Already voted!", alert2.text)
         alert2.accept()
 
 if __name__ == "__main__":

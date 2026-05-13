@@ -37,8 +37,8 @@ class User(UserMixin, db.Model):
     password_hashed = db.Column(db.String(256), nullable=False)
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
-    drawings = db.relationship("Drawing", back_populates="user")
-    vote_drawing = db.relationship("Vote", back_populates="voter")
+    drawings = db.relationship("Drawing", back_populates="user", cascade="all, delete-orphan")
+    vote_drawing = db.relationship("Vote", back_populates="voter", cascade="all, delete-orphan")
 
     def set_password(self, password):
         self.password_hashed = generate_password_hash(password)

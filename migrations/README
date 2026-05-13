@@ -1,1 +1,6 @@
 Single-database configuration for Flask.
+
+running test suite
+1. run start.bat
+2. paste  python -m unittest discover tests into terminal
+3. paste  python -m unittest discover tests/selenium

@@ -29,7 +29,7 @@ class RouteTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_drawing_requires_login(self):
-        response = self.client.get('/drawing')
+        response = self.client.get('/drawing/1')
         self.assertEqual(response.status_code, 302)
 
     def test_index_contains_content(self):

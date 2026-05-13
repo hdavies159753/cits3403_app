@@ -1,3 +1,5 @@
+from app import create_app, db
+from app.models import User
 import unittest
 import time
 
@@ -15,9 +17,20 @@ BASE_URL = "http://127.0.0.1:5000"
 class SeleniumFunctionTests(unittest.TestCase):
 
     def setUp(self):
+        self.app = create_app()
+        self.app_context = self.app.app_context()
+        self.app_context.push()
+
+        db.create_all()
+
+        user = User.query.filter_by(username="testuser").first()
+        if not user:
+            user = User(username="testuser", email="test@test.com")
+            user.set_password("testpass")
+            db.session.add(user)
+            db.session.commit()
         options = webdriver.ChromeOptions()
         options.add_argument("--start-maximized")
-
         self.driver = webdriver.Chrome(options=options)
         self.wait = WebDriverWait(self.driver, 5)
 

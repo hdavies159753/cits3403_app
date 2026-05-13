@@ -1,3 +1,5 @@
+from app import create_app, db
+from app.models import User
 import unittest
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -12,6 +14,19 @@ BASE_URL = "http://127.0.0.1:5000"
 class LoginSeleniumTest(unittest.TestCase):
 
     def setUp(self):
+        self.app = create_app()
+        self.app_context = self.app.app_context()
+        self.app_context.push()
+
+        db.create_all()
+
+        user = User.query.filter_by(username="testuser").first()
+        if not user:
+            user = User(username="testuser", email="test@test.com")
+            user.set_password("testpass")
+            db.session.add(user)
+            db.session.commit()
+
         options = webdriver.ChromeOptions()
         options.add_argument("--start-maximized")
         self.driver = webdriver.Chrome(options=options)

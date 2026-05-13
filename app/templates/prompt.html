@@ -34,6 +34,8 @@
         <button id="btn-brush" class="active">Brush</button>
         <button id="btn-eraser">Eraser</button>
         <button id="btn-clear">Clear</button>
+        <button id="btn-undo" disabled>Undo</button>
+        <button id="btn-redo" disabled>Redo</button>
         <label class="ms-3">
           Color: <input type="color" id="color-picker" value="#000000">
         </label>
@@ -95,9 +97,42 @@
   let lastX = null;
   let lastY = null;
 
+  // Undo/redo history — stores ImageData snapshots
+  const undoStack = [];
+  const redoStack = [];
+  const MAX_HISTORY = 30;
+
+  function saveState() {
+    undoStack.push(ctx.getImageData(0, 0, 256, 256));
+    if (undoStack.length > MAX_HISTORY) undoStack.shift();
+    redoStack.length = 0;  // new stroke clears redo
+    updateUndoRedoButtons();
+  }
+
+  function undo() {
+    if (undoStack.length === 0) return;
+    redoStack.push(ctx.getImageData(0, 0, 256, 256));
+    ctx.putImageData(undoStack.pop(), 0, 0);
+    updateUndoRedoButtons();
+  }
+
+  function redo() {
+    if (redoStack.length === 0) return;
+    undoStack.push(ctx.getImageData(0, 0, 256, 256));
+    ctx.putImageData(redoStack.pop(), 0, 0);
+    updateUndoRedoButtons();
+  }
+
+  function updateUndoRedoButtons() {
+    btnUndo.disabled = undoStack.length === 0;
+    btnRedo.disabled = redoStack.length === 0;
+  }
+
   const btnBrush = document.getElementById('btn-brush');
   const btnEraser = document.getElementById('btn-eraser');
   const btnClear = document.getElementById('btn-clear');
+  const btnUndo = document.getElementById('btn-undo');
+  const btnRedo = document.getElementById('btn-redo');
   const colorPicker = document.getElementById('color-picker');
   const sizeSlider = document.getElementById('brush-size');
   const sizeLabel = document.getElementById('size-label');
@@ -115,8 +150,12 @@
   });
 
   btnClear.addEventListener('click', () => {
+    saveState();
     ctx.clearRect(0, 0, 256, 256);
   });
+
+  btnUndo.addEventListener('click', undo);
+  btnRedo.addEventListener('click', redo);
 
   colorPicker.addEventListener('input', (e) => {
     color = e.target.value;
@@ -160,6 +199,7 @@
   }
 
   canvas.addEventListener('mousedown', (e) => {
+    saveState();
     drawing = true;
     const pos = getCanvasPos(e);
     lastX = pos.x;
@@ -216,6 +256,17 @@
       console.error(error);
       alert("Error submitting!");
     });
+  });
+
+  // Keyboard shortcuts: Ctrl+Z = undo, Ctrl+Y / Ctrl+Shift+Z = redo
+  document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.key === 'z' && !e.shiftKey) {
+      e.preventDefault();
+      undo();
+    } else if (e.ctrlKey && (e.key === 'y' || (e.key === 'z' && e.shiftKey))) {
+      e.preventDefault();
+      redo();
+    }
   });
 </script>
 

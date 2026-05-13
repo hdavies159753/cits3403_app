@@ -1,3 +1,12 @@
+
+body {
+  background-color: #a8f2fc !important;
+}
+
+.card-body {
+  background-color: #a9f0fbb8;
+}
+
 .sidenav {
   height: 100%; /* 100% Full-height */
   width: 0; /* 0 width - change this with JavaScript */
@@ -5,7 +14,7 @@
   z-index: 9999; /* Stay on top */
   top: 0;
   left: 0;
-  background-color: #000000; /* Black*/
+  background-color: #82baff;
   overflow-x: hidden; /* Disable horizontal scroll */
   padding-top: 60px; /* Place content 60px from the top */
   transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
@@ -27,7 +36,9 @@
 
 /* When you mouse over the navigation links, change their color */
 .sidenav a:hover {
-  color: #85f0b9;
+  background-image: linear-gradient(to right, red, orange, yellow, rgb(82, 237, 82), rgb(0, 149, 255), violet);
+  color: transparent;
+  background-clip: text;
 }
 
 /* Position and style the close button (top right corner) */
@@ -39,14 +50,82 @@
   margin-left: 4%;
 }
 
-.menu-btn {
-  background-color: #848484;
-  border: #848484;
+mark {
+  background: rgba(255, 255, 0, 0.734) !important;
+  border-radius: 10px;
+}
+
+button {
+  background-color: #e8f4fb;
+  border: #e8f4fb;
   transition-duration: 0.4s;
   text-align: center;
 }
 
-.menu-btn:hover {
-  background-color: #85f0b9;
-  border: #85f0b9;
+button:hover{
+  background: linear-gradient(to right, red, orange, yellow, rgb(82, 237, 82), rgb(0, 149, 255), violet);
+}
+
+.btn-primary {
+  background-color: #e8f4fb !important;
+  color: #000000;
+  border: transparent !important;
+  transition-duration: 0.4s;
+  text-align: center;
+}
+
+.btn {
+  background-color: #e8f4fb !important;
+  color: #000000 !important;
+  border: transparent !important;
+  transition-duration: 0.4s;
+  text-align: center;
+}
+
+.ball{
+  margin:50px 80%;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  border-radius:50%;
+  width: 90px;
+  height:90px;
+  background-color: orange;
+  box-shadow: 0 0 35px 5px yellow,0 0 25px 10px yellow inset;
+  z-index: -10;
+}
+
+.cloud {
+  position: absolute;
+  margin:200px 50%;
+  height: 150px; /* control the size */
+  aspect-ratio: 1.8;
+  --g: radial-gradient(50% 50%, #000 98%, #0000) no-repeat;
+  mask: var(--g) 100% 100%/30% 60%,var(--g) 70% 0/50% 100%,var(--g) 0 100%/36% 68%,var(--g) 27% 18%/26% 40%,linear-gradient(#000 0 0) bottom/67% 58% no-repeat;
+  background: #f1f9ff;
+  z-index: -9;
+}
+
+.cloud2 {
+  position: absolute;
+  margin-top:570px;
+  margin-left: max(2vw, 30px);
+  height: 15%; /* control the size */
+  aspect-ratio: 1.8;
+  --g: radial-gradient(50% 50%, #000 98%, #0000) no-repeat;
+  mask: var(--g) 100% 100%/30% 60%,var(--g) 70% 0/50% 100%,var(--g) 0 100%/36% 68%,var(--g) 27% 18%/26% 40%,linear-gradient(#000 0 0) bottom/67% 58% no-repeat;
+  background: #f1f9ff;
+  z-index: -9;
+}
+
+.cloud3 {
+  position: absolute;
+  margin-top:500px;
+  margin-left: max(2vw, 75%);
+  height: 15%; /* control the size */
+  aspect-ratio: 1.8;
+  --g: radial-gradient(50% 50%, #000 98%, #0000) no-repeat;
+  mask: var(--g) 100% 100%/30% 60%,var(--g) 70% 0/50% 100%,var(--g) 0 100%/36% 68%,var(--g) 27% 18%/26% 40%,linear-gradient(#000 0 0) bottom/67% 58% no-repeat;
+  background: #f1f9ff;
+  z-index: -9;
 }

@@ -47,7 +47,7 @@
     </div>
 
         <div class="mt-3 text-center">
-            <button type="submit" class="btn btn-primary text_dark">Apply Filters</button>
+            <button type="submit" class="btn btn-primary">Apply Filters</button>
         </div>
     </form>
 
@@ -61,7 +61,9 @@
         {% for drawing in drawings %}
         <div class="col-md-4">
             <div class="card">
-                <img src="{{ drawing.image }}" class="card-img-top" alt="drawing">
+                <a href="{{ url_for('main.individual_drawing', drawing_id=drawing.id) }}">
+                    <img src="{{ drawing.image }}" class="card-img-top browse-img" alt="drawing">
+                </a>
                 <div class="card-body">
                     <h5 class="card-title">{{ drawing.user.username }}</h5>
                     <p class="card-text">Prompt: {{ drawing.prompt.text }}</p>

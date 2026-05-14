@@ -14,6 +14,7 @@
     <div class="cloud"></div>
     <div class="cloud2"></div>
     <div class="cloud3"></div>
+    {% block sidebar %}
     <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
         <a href="{{ url_for('main.index') }}">Prompt</a>
@@ -29,6 +30,7 @@
     </div>
 
     <button class="menu-btn" onclick="openNav()">Menu</button>
+    {% endblock %}
 
     {% block content %}{% endblock %}
 

@@ -143,12 +143,12 @@ def submit_drawing():
     if existing_drawing:
         return jsonify({"success": False,"message": "You have already submitted a drawing for this prompt."}), 400
 
-    success, message = submit_and_save(current_user.id, data)
+    success, message, drawing_id = submit_and_save(current_user.id, data)
     status_code = 200 if success else 400
-    return jsonify({
-        "success": success,
-        "message": message
-    }), status_code
+    response = {"success": success, "message": message}
+    if drawing_id:
+        response["drawing_id"] = drawing_id
+    return jsonify(response), status_code
 
 @main.route('/vote', methods=['POST'])
 @login_required
@@ -180,4 +180,12 @@ def individual_drawing(drawing_id):
     has_voted = Vote.query.filter_by(voter_id=current_user.id, drawing_id=drawing_id).first() is not None
     is_own_drawing = drawing.user_id == current_user.id
     return render_template("individual_drawing.html", drawing=drawing, vote_count=vote_count, has_voted=has_voted, is_own_drawing=is_own_drawing)
+
+@main.route("/success/<int:drawing_id>")
+@login_required
+def submission_success(drawing_id):
+    drawing = Drawing.query.get_or_404(drawing_id)
+    if drawing.user_id != current_user.id:
+        return redirect(url_for('main.browse'))
+    return render_template("success.html", drawing=drawing)
 

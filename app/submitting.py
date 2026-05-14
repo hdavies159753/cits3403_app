@@ -8,10 +8,10 @@ def submit_and_save(user_id, data):
     prompt_id = data.get('prompt_id')
 
     if not image_data:
-        return False, "No image data provided."
+        return False, "No image data provided.", None
 
     if not prompt_id:
-        return False, "Missing prompt information."
+        return False, "Missing prompt information.", None
 
     try:
         drawing = Drawing(
@@ -21,10 +21,10 @@ def submit_and_save(user_id, data):
         )
         db.session.add(drawing)
         db.session.commit()
-        return True, "Submitted!"
+        return True, "Submitted!", drawing.id
     except IntegrityError:
         db.session.rollback()
-        return False, "You have already submitted a drawing for this prompt."
+        return False, "You have already submitted a drawing for this prompt.", None
     except Exception as e:
         db.session.rollback()
-        return False, f"Submission failed: {str(e)}"
+        return False, f"Submission failed: {str(e)}", None

@@ -31,20 +31,4 @@ def create_app(config_class=Config):
     def page_not_found(e):
         return render_template('404.html'), 404
 
-    with app.app_context():
-        _seed_admin()
-
     return app
-
-
-def _seed_admin():
-    """Create the default admin account if it doesn't already exist."""
-    from app.models import User
-    try:
-        if not User.query.filter_by(username='adminuser').first():
-            admin = User(username='adminuser')
-            admin.set_password('adminuserpass')
-            db.session.add(admin)
-            db.session.commit()
-    except Exception:
-        pass  # table may not exist yet (e.g. during flask db upgrade)

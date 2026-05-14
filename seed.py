@@ -98,14 +98,21 @@ PROMPTS = [
 
 
 def seed():
-    """Insert dummy users, prompts, drawings and votes."""
+    """Wipe all data and insert fresh dummy users, prompts, drawings and votes."""
 
-    # Guard: skip if prompts already exist (idempotent)
-    if Prompt.query.first() is not None:
-        print("Seed data already exists — skipping.")
-        return
+    print("Wiping database …")
+    Vote.query.delete()
+    Drawing.query.delete()
+    Prompt.query.delete()
+    User.query.delete()
+    db.session.commit()
 
     print("Seeding database …")
+
+    # --- Admin user ---
+    admin = User(username="adminuser")
+    admin.set_password("adminuserpass")
+    db.session.add(admin)
 
     # --- Users ---
     users = []
@@ -116,9 +123,7 @@ def seed():
         users.append(user)
     db.session.flush()  # assigns ids
 
-    # include adminuser (already created by _seed_admin)
-    admin = User.query.filter_by(username="adminuser").first()
-    all_users = [admin] + users if admin else users
+    all_users = [admin] + users
 
     # --- Prompts (today through 6 days ago) ---
     today = date.today()

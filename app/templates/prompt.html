@@ -250,7 +250,11 @@
     })
     .then(res => res.json())
     .then(data => {
-      alert(data.message);
+      if (data.success) {
+        window.location.href = "/success/" + data.drawing_id;
+      } else {
+        alert(data.message);
+      }
     })
     .catch(error => {
       console.error(error);

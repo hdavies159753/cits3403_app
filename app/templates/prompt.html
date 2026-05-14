@@ -86,6 +86,10 @@
   const canvas = document.getElementById('drawing-canvas');
   const ctx = canvas.getContext('2d');
 
+  // Fill canvas with white so saved PNGs have a white background
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, 256, 256);
+
   const displayScale = 2;
   canvas.style.width = (256 * displayScale) + 'px';
   canvas.style.height = (256 * displayScale) + 'px';
@@ -152,6 +156,8 @@
   btnClear.addEventListener('click', () => {
     saveState();
     ctx.clearRect(0, 0, 256, 256);
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, 256, 256);
   });
 
   btnUndo.addEventListener('click', undo);

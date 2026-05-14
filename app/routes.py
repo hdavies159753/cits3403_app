@@ -73,6 +73,7 @@ def leaderboard():
             'score': score,
             'image': drawing.image,
             'date': drawing.date.strftime('%Y-%m-%d') if drawing.date else '',
+            "user_id": drawing.user.id,
         })
 
     prompts = Prompt.query.order_by(Prompt.date.desc()).all()

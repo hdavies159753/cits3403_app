@@ -208,5 +208,13 @@ def user_profile(user_id):
         .all()
     )
 
-    return render_template("userprofile.html", user=user, drawings=drawings)
+    total_drawings = len(drawings)
+    total_votes = sum(len(drawing.votes) for drawing in drawings)
 
+    return render_template(
+        "userprofile.html",
+        user=user,
+        drawings=drawings,
+        total_drawings=total_drawings,
+        total_votes=total_votes
+    )

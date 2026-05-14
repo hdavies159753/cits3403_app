@@ -113,4 +113,10 @@ migrations/         Database migrations
 # Authors
 
 ## CITS3403 Project Team
-Aidan Harding, Alan Ling , Henry Davies, Oscar Chan
+
+| Name | Number | GitName |
+| -------- | -------- | -------- |
+| Aidan Harding | 24315152 | BlueBackSpider(Aidan Harding) |
+| Alan Ling | 23843412 | AlanLingYS(Alan Ling) |
+| Henry Davies | 24483717 | hdavies159753(Henry Davies) |
+| Oscar Chan | 24320636 | Oscar-0103(Oscar Chan) |

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}{{ user.username }} Profile{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+
+    <div class="text-center">
+        <h1>{{ user.username }}'s Profile</h1>
+        <p class="text-muted">All previous drawings by this user</p>
+    </div>
+
+    <div class="row mt-5 g-4">
+        {% if drawings %}
+            {% for drawing in drawings %}
+            <div class="col-md-4">
+                <div class="card">
+                    <a href="{{ url_for('main.individual_drawing', drawing_id=drawing.id) }}">
+                        <img src="{{ drawing.image }}" class="card-img-top browse-img" alt="drawing">
+                    </a>
+
+                    <div class="card-body">
+                        <p class="card-text">Prompt: {{ drawing.prompt.text }}</p>
+                        <p class="card-text">Date: {{ drawing.date.strftime('%Y-%m-%d') }}</p>
+                        <p class="card-text">Votes: {{ drawing.votes|length }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12">
+                <p class="text-center text-muted">This user has not submitted any drawings yet.</p>
+            </div>
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}

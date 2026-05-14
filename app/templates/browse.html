@@ -65,7 +65,11 @@
                     <img src="{{ drawing.image }}" class="card-img-top browse-img" alt="drawing">
                 </a>
                 <div class="card-body">
-                    <h5 class="card-title">{{ drawing.user.username }}</h5>
+                    <h5 class="card-title">
+                        <a href="{{ url_for('main.user_profile', user_id=drawing.user.id) }}">
+                            {{ drawing.user.username }}
+                        </a>
+                    </h5>                    
                     <p class="card-text">Prompt: {{ drawing.prompt.text }}</p>
                     <p class="card-text">Date: {{ drawing.date }}</p>
                 </div>

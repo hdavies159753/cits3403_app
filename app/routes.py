@@ -194,3 +194,18 @@ def submission_success(drawing_id):
         return redirect(url_for('main.browse'))
     return render_template("success.html", drawing=drawing)
 
+
+@main.route("/profile/<int:user_id>")
+@login_required
+def user_profile(user_id):
+    user = User.query.get_or_404(user_id)
+
+    drawings = (
+        Drawing.query
+        .filter_by(user_id=user.id)
+        .order_by(Drawing.date.desc())
+        .all()
+    )
+
+    return render_template("userprofile.html", user=user, drawings=drawings)
+

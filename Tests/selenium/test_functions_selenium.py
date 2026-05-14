@@ -57,24 +57,22 @@ class SeleniumFunctionTests(unittest.TestCase):
         """Test that the main prompt page loads after login."""
         self.login()
 
-        self.driver.get(f"{BASE_URL}/")
+        self.assertEqual(self.driver.current_url, "http://127.0.0.1:5000/")
 
-        self.assertIn("Daily Doodle", self.driver.page_source)
-
-    def test_submit_drawing(self):
-        """Test that submitting a drawing shows a success alert."""
+    def test_01_submit_drawing(self):
+        """Test that submitting a drawing shows a success page."""
         self.login()
-
-        # Navigate to prompt page where the canvas and submit button are
-        self.driver.get(f"{BASE_URL}/")
 
         submit_btn = self.wait.until(
             EC.element_to_be_clickable((By.ID, "submit_btn"))
         )
         submit_btn.click()
 
-        alert1 = self.wait.until(EC.alert_is_present())
-        alert1.accept()
+        self.wait.until(lambda d: "Daily Doodle" not in d.page_source)
+
+        self.assertIn("http://127.0.0.1:5000/success", self.driver.current_url)
+
+
 
 #--------------------------------------------------------------------
     def test_vote_increases_count(self):
@@ -114,11 +112,72 @@ class SeleniumFunctionTests(unittest.TestCase):
         alert1 = self.wait.until(EC.alert_is_present())
         alert1.accept()
 
-        vote_btn.click()
+        self.assertFalse(vote_btn.is_enabled())
 
-        alert2 = self.wait.until(EC.alert_is_present())
-        self.assertIn("Already voted!", alert2.text)
-        alert2.accept()
+
+#--------------------------------------------------------------------
+
+    def test_sidebar_opens(self):
+
+        self.login()
+
+        driver = self.driver
+        driver.get(f"{BASE_URL}/")  # any page with base.html works
+
+        sidebar = driver.find_element(By.ID, "mySidenav")
+        menu_button = driver.find_element(By.TAG_NAME, "button")
+
+        # ensure sidebar is initially closed
+        self.assertNotIn("open", sidebar.get_attribute("class"))
+
+        # click menu button
+        menu_button.click()
+
+        # wait until "open" class appears
+        self.wait.until(
+            lambda d: "open" in d.find_element(By.ID, "mySidenav").get_attribute("class")
+        )
+
+        sidebar = driver.find_element(By.ID, "mySidenav")
+        self.assertIn("open", sidebar.get_attribute("class"))
+
+    def test_sidebar_opens_and_closes(self):
+
+        self.login()
+
+        driver = self.driver
+        driver.get(f"{BASE_URL}")  # any page with base.html works
+
+        sidebar = driver.find_element(By.ID, "mySidenav")
+        menu_button = driver.find_element(By.TAG_NAME, "button")
+
+        # ensure sidebar is initially closed
+        self.assertNotIn("open", sidebar.get_attribute("class"))
+
+        # click menu button
+        menu_button.click()
+
+        # wait until "open" class appears
+        self.wait.until(
+            lambda d: "open" in d.find_element(By.ID, "mySidenav").get_attribute("class")
+        )
+
+        sidebar = driver.find_element(By.ID, "mySidenav")
+        self.assertIn("open", sidebar.get_attribute("class"))
+
+        # close (X button inside sidebar)
+        close_button = self.wait.until(
+            EC.element_to_be_clickable((By.CLASS_NAME, "closebtn"))
+        )
+
+        close_button.click()
+
+        self.wait.until(
+            lambda d: "open" not in d.find_element(By.ID, "mySidenav").get_attribute("class")
+        )
+
+        self.assertNotIn("open", sidebar.get_attribute("class"))
+
 
 if __name__ == "__main__":
     unittest.main()

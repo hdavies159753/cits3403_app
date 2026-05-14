@@ -77,6 +77,11 @@ cd cits3403_app
 ```
 # Running the Application
 
+These startup scripts automatically:
+- create the virtual environment
+- install requirements
+- initialize the database
+
 ## Windows
 
 Run:
@@ -86,11 +91,6 @@ start.bat
 
 Run:
 start.sh
-
-These startup scripts automatically:
-- create the virtual environment
-- install requirements
-- initialize the database
 
 # Running Tests
 

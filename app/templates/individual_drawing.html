@@ -13,7 +13,9 @@
 
     <div class="drawing-info">
         <h2 class="mt-2">
-            {{ drawing.user.username }}
+            <a href="{{ url_for('main.user_profile', user_id=drawing.user.id) }}">
+                {{ drawing.user.username }}
+            </a>        
         </h2>
         <p>
             Prompt: {{ drawing.prompt.text }}

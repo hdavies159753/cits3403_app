@@ -177,5 +177,7 @@ def vote():
 def individual_drawing(drawing_id):
     drawing = Drawing.query.get_or_404(drawing_id)
     vote_count = Vote.query.filter_by(drawing_id=drawing_id).count()
-    return render_template("individual_drawing.html", drawing=drawing, vote_count = vote_count )
+    has_voted = Vote.query.filter_by(voter_id=current_user.id, drawing_id=drawing_id).first() is not None
+    is_own_drawing = drawing.user_id == current_user.id
+    return render_template("individual_drawing.html", drawing=drawing, vote_count=vote_count, has_voted=has_voted, is_own_drawing=is_own_drawing)
 

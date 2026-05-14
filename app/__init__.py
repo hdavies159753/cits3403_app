@@ -1,4 +1,5 @@
 from flask import Flask
+from flask import render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
@@ -25,6 +26,10 @@ def create_app(config_class=Config):
 
     from app.routes import main
     app.register_blueprint(main)
+
+    @app.errorhandler(404)
+    def page_not_found(e):
+        return render_template('404.html'), 404
 
     with app.app_context():
         _seed_admin()

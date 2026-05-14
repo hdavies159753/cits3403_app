@@ -22,6 +22,10 @@ voteBtn.addEventListener("click", () => {
                 `vote-count-${drawingId}`
             );
             voteCount.textContent = data.vote_count;
+            voteBtn.disabled = true;
+            voteBtn.textContent = "Voted";
+            voteBtn.classList.remove("btn-primary");
+            voteBtn.classList.add("btn-success");
         }
     })
     .catch(error => {

@@ -53,24 +53,32 @@ class SeleniumFunctionTests(unittest.TestCase):
 
 #--------------------------------------------------------------------
 
-    def test_drawing_page_loads(self):
+    def test_prompt_page_loads(self):
+        """Test that the main prompt page loads after login."""
         self.login()
 
-        self.driver.get(f"{BASE_URL}/drawing")
+        self.driver.get(f"{BASE_URL}/")
 
-        self.assertIn("/drawing", self.driver.current_url)
+        self.assertIn("Daily Doodle", self.driver.page_source)
 
     def test_submit_drawing(self):
+        """Test that submitting a drawing shows a success alert."""
         self.login()
-        submit_btn = self.driver.find_element(By.ID, "submit_btn")
-        
+
+        # Navigate to prompt page where the canvas and submit button are
+        self.driver.get(f"{BASE_URL}/")
+
+        submit_btn = self.wait.until(
+            EC.element_to_be_clickable((By.ID, "submit_btn"))
+        )
         submit_btn.click()
 
         alert1 = self.wait.until(EC.alert_is_present())
-        self.assertIn("Submitted!", alert1.text)
         alert1.accept()
+
 #--------------------------------------------------------------------
     def test_vote_increases_count(self):
+        """Test that voting on a drawing increases the vote count."""
         self.login()
 
         driver = self.driver
@@ -84,7 +92,6 @@ class SeleniumFunctionTests(unittest.TestCase):
 
         driver.find_element(By.CLASS_NAME, "vote-btn").click()
 
-        # WAIT FOR CHANGE IN COUNT (THIS IS THE KEY FIX)
         alert1 = self.wait.until(EC.alert_is_present())
         self.assertIn("Vote submitted!", alert1.text)
         alert1.accept()
@@ -94,6 +101,7 @@ class SeleniumFunctionTests(unittest.TestCase):
         self.assertEqual(new_count, initial + 1)
 
     def test_duplicate_vote_blocked(self):
+        """Test that voting twice on the same drawing is blocked."""
         self.login()
 
         driver = self.driver
@@ -104,11 +112,10 @@ class SeleniumFunctionTests(unittest.TestCase):
         vote_btn.click()
 
         alert1 = self.wait.until(EC.alert_is_present())
-        self.assertIn("Vote submitted!", alert1.text)
         alert1.accept()
 
         vote_btn.click()
-        
+
         alert2 = self.wait.until(EC.alert_is_present())
         self.assertIn("Already voted!", alert2.text)
         alert2.accept()

@@ -17,7 +17,12 @@ main = Blueprint('main', __name__)
 def index():
     today = date.today()
     todays_prompt = Prompt.query.filter_by(date=today).first()
-    return render_template('prompt.html', todays_prompt=todays_prompt)
+    has_submitted = False
+    if todays_prompt:
+        has_submitted = Drawing.query.filter_by(
+            user_id=current_user.id, prompt_id=todays_prompt.id
+        ).first() is not None
+    return render_template('prompt.html', todays_prompt=todays_prompt, has_submitted=has_submitted)
 
 
 @main.route('/browse')

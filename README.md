@@ -114,7 +114,7 @@ migrations/         Database migrations
 
 ## CITS3403 Project Team
 
-| Name | Number | GitName |
+| Name | Student Number | Username(Name) |
 | -------- | -------- | -------- |
 | Aidan Harding | 24315152 | BlueBackSpider(Aidan Harding) |
 | Alan Ling | 23843412 | AlanLingYS(Alan Ling) |

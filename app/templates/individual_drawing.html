@@ -2,30 +2,34 @@
 
 {% block content %}
 
-<div class="container mt-4">
+<div class="container mt-4 drawing-page">
     <a href="{{ url_for('main.browse') }}" class="btn btn-secondary">
-        Back to Browse
+        ← Back to Browse
     </a>
 
-    <img src="{{ drawing.image }}" alt="Drawing by {{ drawing.user.username }}" class="img-fluid rounded mt-3" style="max-height: 88vh;">
-
-    <h2 class="mt-2">
-        {{ drawing.user.username }}
-    </h2>
-    <p>
-        Prompt: {{ drawing.prompt.text }}
-    </p>
-    <p>
-        Number of Votes:
-        <span id="vote-count-{{ drawing.id }}">
-            {{ drawing.votes|length }}
-        </span>
-    </p>
-    <button
-        class="btn btn-primary vote-btn"
-        data-drawing-id="{{ drawing.id }}">
-        Vote
-    </button>
+    <div class = "drawing-image">
+        <img src="{{ drawing.image }}" alt="Drawing by {{ drawing.user.username }}" class="img-fluid rounded mt-3" style="max-height: 88vh;">
+    </div>
+    
+    <div class="drawing-info">
+        <h2 class="mt-2">
+            {{ drawing.user.username }}
+        </h2>
+        <p>
+            Prompt: {{ drawing.prompt.text }}
+         </p>
+        <p>
+            <strong>Number of Votes:</strong>
+            <span id="vote-count-{{ drawing.id }}">
+                {{ vote_count }}
+             </span>
+        </p>
+        <button
+            class="btn btn-primary vote-btn"
+            data-drawing-id="{{ drawing.id }}">
+            Vote
+        </button>
+    </div>
     <script src="{{ url_for('static', filename='vote.js') }}"></script>
 </div>
 {% endblock %}

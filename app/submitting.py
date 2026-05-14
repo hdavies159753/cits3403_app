@@ -27,4 +27,4 @@ def submit_and_save(user_id, data):
         return False, "You have already submitted a drawing for this prompt."
     except Exception as e:
         db.session.rollback()
-        return False, f"Submission failed"
+        return False, f"Submission failed: {str(e)}"

@@ -134,6 +134,14 @@ def submit_drawing():
     data = request.get_json()
     if not data:
         return jsonify({"success": False, "message": "Invalid request."}), 400
+    
+    today = date.today()
+    todays_prompt = Prompt.query.filter_by(date=today).first()
+
+    existing_drawing = Drawing.query.filter_by(user_id=current_user.id,prompt_id=todays_prompt.id).first()
+
+    if existing_drawing:
+        return jsonify({"success": False,"message": "You have already submitted a drawing for this prompt."}), 400
 
     success, message = submit_and_save(current_user.id, data)
     status_code = 200 if success else 400
@@ -168,5 +176,6 @@ def vote():
 @login_required
 def individual_drawing(drawing_id):
     drawing = Drawing.query.get_or_404(drawing_id)
-    return render_template("individual_drawing.html", drawing=drawing)
+    vote_count = Vote.query.filter_by(drawing_id=drawing_id).count()
+    return render_template("individual_drawing.html", drawing=drawing, vote_count = vote_count )
 

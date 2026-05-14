@@ -129,3 +129,24 @@ button:hover{
   background: #f1f9ff;
   z-index: -9;
 }
+
+.drawing-page {
+    position: relative;
+}
+
+.drawing-image {
+    max-width: 500px;
+    width: 100%;
+    max-height: 70vh;
+    object-fit: contain;
+    display: block;
+    margin: 20px auto;
+}
+
+.drawing-info {
+    text-align: center;
+}
+
+.vote-btn {
+    margin-top: 10px;
+}

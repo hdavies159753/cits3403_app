@@ -1,3 +1,5 @@
+from requests import options
+
 from app import create_app, db
 from app.models import User
 import unittest
@@ -33,7 +35,9 @@ class SeleniumFunctionTests(unittest.TestCase):
         db.session.add(user)
         db.session.commit()
         options = webdriver.ChromeOptions()
-        options.add_argument("--start-maximized")
+        options.add_argument("--headless")
+        options.add_argument("--window-size=1920,1080")
+
         self.driver = webdriver.Chrome(options=options)
         self.wait = WebDriverWait(self.driver, 5)
 

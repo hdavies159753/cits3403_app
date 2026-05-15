@@ -90,8 +90,9 @@ start.bat
 ## Mac/Linux
 
 Run:
-start.sh
-
+- chmod +x start.sh
+- ./start.sh
+  
 # Running Tests
 
 After installation, run the application, open a terminal in the project folder and run:
@@ -114,7 +115,7 @@ migrations/         Database migrations
 
 ## CITS3403 Project Team
 
-| Student Number | Name | Username(Name) |
+| Student Number | Name | Github Username(Name) |
 | -------- | -------- | -------- |
 | 24315152 | Aidan Harding | BlueBackSpider(Aidan Harding) |
 | 23843412 | Alan Ling | AlanLingYS(Alan Ling) |

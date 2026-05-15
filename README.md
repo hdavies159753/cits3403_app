@@ -90,7 +90,7 @@ start.bat
 ## Mac/Linux
 
 Run:
-chmod +x start.sh
+chmod +x start.sh then
 ./start.sh
 
 # Running Tests

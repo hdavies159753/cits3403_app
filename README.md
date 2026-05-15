@@ -90,9 +90,9 @@ start.bat
 ## Mac/Linux
 
 Run:
-chmod +x start.sh then
-./start.sh
-
+- chmod +x start.sh
+- ./start.sh
+  
 # Running Tests
 
 After installation, run the application, open a terminal in the project folder and run:

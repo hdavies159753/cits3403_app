@@ -95,6 +95,8 @@ Run:
   
 # Running Tests
 
+To run the selenium browser tests either Firefox or Chrome are required:
+
 After installation, run the application, open a terminal in the project folder and run:
 
 ## Unit Tests

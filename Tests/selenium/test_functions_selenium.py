@@ -1,20 +1,49 @@
-from requests import options
-
 from app import create_app, db
 from app.models import User
 import unittest
-import time
+import warnings
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException
-
+from selenium.common.exceptions import WebDriverException
 
 BASE_URL = "http://127.0.0.1:5000"
 
+def create_driver():
+
+    # Try Chrome first
+
+    try:
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument("--headless")
+        chrome_options.add_argument("--window-size=1920,1080")
+
+        driver = webdriver.Chrome(options=chrome_options)
+
+        return driver
+
+    except WebDriverException:
+        print("Chrome unavailable")
+        
+    # Fall back to Firefox
+
+    try:
+        warnings.filterwarnings("ignore", category=ResourceWarning) #Firefox webdriver more unstable in headless mode, suppress ResourceWarnings, no effect on test outcome
+        firefox_options = webdriver.FirefoxOptions()
+        firefox_options.add_argument("--headless")
+
+        driver = webdriver.Firefox(options=firefox_options)
+        return driver
+
+    except WebDriverException:
+        print("Firefox unavailable")
+
+    raise Exception(
+        "No compatible browser found. Install Firefox or Chrome to run Selenium tests."
+    )
 
 class SeleniumFunctionTests(unittest.TestCase):
 
@@ -34,15 +63,12 @@ class SeleniumFunctionTests(unittest.TestCase):
         user.set_password("testpass")
         db.session.add(user)
         db.session.commit()
-        options = webdriver.ChromeOptions()
-        options.add_argument("--headless")
-        options.add_argument("--window-size=1920,1080")
-
-        self.driver = webdriver.Chrome(options=options)
+        self.driver = create_driver()
         self.wait = WebDriverWait(self.driver, 5)
 
     def tearDown(self):
-        self.driver.quit()
+        if self.driver:
+            self.driver.quit()
 
     def login(self, username="testuser", password="testpass"):
         driver = self.driver

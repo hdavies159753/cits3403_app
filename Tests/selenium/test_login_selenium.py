@@ -1,14 +1,48 @@
 from app import create_app, db
 from app.models import User
 import unittest
+import warnings
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import WebDriverException
 
 
 BASE_URL = "http://127.0.0.1:5000"
+
+def create_driver():
+
+    # Try Chrome first
+
+    try:
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument("--headless")
+        chrome_options.add_argument("--window-size=1920,1080")
+
+        driver = webdriver.Chrome(options=chrome_options)
+
+        return driver
+
+    except WebDriverException:
+        print("Chrome unavailable")
+    # Fall back to Firefox
+
+    try:
+        warnings.filterwarnings("ignore", category=ResourceWarning)
+        firefox_options = webdriver.FirefoxOptions()
+        firefox_options.add_argument("--headless")
+
+        driver = webdriver.Firefox(options=firefox_options)
+        return driver
+
+    except WebDriverException:
+        print("Firefox unavailable")
+
+    raise Exception(
+        "No compatible browser found. Install Firefox or Chrome to run Selenium tests."
+    )
 
 
 class LoginSeleniumTest(unittest.TestCase):
@@ -27,9 +61,7 @@ class LoginSeleniumTest(unittest.TestCase):
             db.session.add(user)
             db.session.commit()
 
-        options = webdriver.ChromeOptions()
-        options.add_argument("--start-maximized")
-        self.driver = webdriver.Chrome(options=options)
+        self.driver = create_driver()
         self.wait = WebDriverWait(self.driver, 5)
 
     def tearDown(self):
